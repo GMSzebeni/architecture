@@ -56,6 +56,25 @@ describe('GET /pets', () => {
   })
 })
 
+describe('GET /pets/{id}', () => {
+  it('should get one pet', async () => {
+    const createPetBody = { name: 'Fluffy' }
+    const expectedPet = [{ id: 1, name: 'Fluffy', age: 1, weight: 1, food: 1 }]
+
+    await app!
+      .inject()
+      .body(createPetBody)
+      .post('/pets')
+    const response = await app!
+      .inject()
+      .get('/pets/1')
+    const body = JSON.parse(response.body)
+
+    expect(response.statusCode).toStrictEqual(200);
+    expect(body).toStrictEqual(expectedPet)
+  })
+})
+
 afterEach(() => {
   app?.close();
   unlinkSync(testDataFile!)

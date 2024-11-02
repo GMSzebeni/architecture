@@ -20,18 +20,25 @@ When a day passes, the pet behaves like this:
 
 Answer these questions:
 
-- What is the entrypoint of this application?
+- What is the entrypoint of this application? 
+server.ts
 - How can we start a dev server?
+npm run dev
 - Where can you find the API specification?
+open-api.yml
 - What endpoints are currently implemented?
+/pets
 
 ## Task 2: Refactor our code
 
 Answer these questions:
 
 - What is the problem with the code from clean coding point of view?
+separaztion of concern, no validation, extra lines
 - What kind of concerns can you recognize in the `app.ts`?
+
 - What kind of tests are easy to write to this code?
+unit tests, input validation
 
 Refactor the code to the *Layered Architecture* layers: Presentational Layer, Business Logic Layer, Data Access Layer.
 
