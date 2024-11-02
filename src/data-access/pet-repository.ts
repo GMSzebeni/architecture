@@ -17,8 +17,21 @@ export class PetRepository {
         this.store = store;
     }
 
-    async create(petProperties: PetProperties) {
-        const pets = await this.store.read();
+    async readAll(): Promise<Pet[]> {
+        return await this.store.read();
+    }
+
+    async save(pets: Pet[]): Promise<void> {
+        await this.store.write(pets);
+    }
+
+    async readById(id: number): Promise<Pet | undefined> {
+        const pets = await this.readAll();
+        return pets.find(pets => pets.id === id);
+    }
+
+    async create(petProperties: PetProperties): Promise<Pet> {
+        const pets = await this.readAll();
         const nextId = getNextId(pets);
 
         const newPet= {
@@ -27,24 +40,15 @@ export class PetRepository {
         }
 
         pets.push(newPet);
-        await this.store.write(pets);
+        await this.save(pets);
         return newPet;
     }
 
-    async readAll() {
-        return await this.store.read();
-    }
-
-    async readById(id: number) {
-        const pets = await this.store.read();
-        return pets.filter(pets => pets.id === id);
-    }
-
-    update() {
+    update(id: number, pet: PetProperties): Promise<Pet> {
         throw new Error('Not implemented')
     }
 
-    delete() {
+    delete(id: number): Promise<void> {
         throw new Error('Not implemented')
     }
 }
