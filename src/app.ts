@@ -75,7 +75,7 @@ export default async function createApp(options = {}, dataFilePath: PathLike) {
     { schema: getPetSchema },
     async (request, reply) => {
       const { id } = request.params;
-      const fedPet = await petService.updatePet(id, "food");
+      const fedPet = await petService.updateFood(id);
       if (fedPet) {
         reply.status(200);
         return fedPet;

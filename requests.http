@@ -16,3 +16,6 @@ GET {{host}}/pets/2
 
 ###
 POST {{host}}/pets/1/food
+
+###
+POST {{host}}/pets/2/age

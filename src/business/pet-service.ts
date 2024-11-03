@@ -27,7 +27,22 @@ export class PetService {
         return await this.repository.readById(id);
     }
 
-    async updatePet(id: number, key: "food" | "age") {
-        return await this.repository.update(id, key);
+    async updateFood(id: number): Promise<Pet | undefined | null> {
+        const pets = await this.getAll();
+        const petToUpdate = pets.find(pet => pet.id === id);
+
+        if (petToUpdate) {
+            if (petToUpdate.weight === 0) return null;
+
+            const updatedPet = {
+                ...petToUpdate,
+                food: petToUpdate.food += 1
+            }
+            
+            await this.repository.update(id, updatedPet);
+            return updatedPet;
+        }
+
+        return petToUpdate;
     }
 }

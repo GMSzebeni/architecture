@@ -45,21 +45,16 @@ export class PetRepository {
         return newPet;
     }
 
-    async update(id: number, key: "food" | "age"): Promise<Pet | undefined | null> {
+    async update(id: number, updatedPet: Pet) {
         const pets = await this.readAll();
-        const petToUpdate = pets.find(pet => pet.id === id);
-
-        if (petToUpdate) {
-            if (petToUpdate.weight === 0) return null;
-            const updatedPet = {
-                ...petToUpdate,
-                [key]: (petToUpdate[key]++)
+        pets.map(pet => {
+            if (pet.id === id) {
+                Object.assign(pet, updatedPet);
             }
-            await this.save(pets);
-            return updatedPet;
-        }
+        })
 
-        return petToUpdate;
+        await this.save(pets);
+        return updatedPet;
     }
 
     delete(id: number): Promise<void> {
