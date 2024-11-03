@@ -59,7 +59,7 @@ describe('GET /pets', () => {
 describe('GET /pets/{id}', () => {
   it('should get one pet', async () => {
     const createPetBody = { name: 'Fluffy' }
-    const expectedPet = [{ id: 1, name: 'Fluffy', age: 1, weight: 1, food: 1 }]
+    const expectedPet = { id: 1, name: 'Fluffy', age: 1, weight: 1, food: 1 }
 
     await app!
       .inject()
@@ -72,6 +72,58 @@ describe('GET /pets/{id}', () => {
 
     expect(response.statusCode).toStrictEqual(200);
     expect(body).toStrictEqual(expectedPet)
+  })
+})
+
+describe('POST /pets/{id}/food', () => {
+  it('should increase food by 1', async () => {
+    const createPetBody = { name: 'Fluffy' };
+    const expectedPet = {
+      id: 1,
+      name: 'Fluffy',
+      age: 1,
+      weight: 1,
+      food: 2
+    };
+
+    await app!
+    .inject()
+    .body(createPetBody)
+    .post('/pets')
+    const response = await app!
+    .inject()
+    .post('/pets/1/food')
+
+    const body = JSON.parse(response.body)
+
+    expect(response.statusCode).toStrictEqual(200);
+    expect(body).toStrictEqual(expectedPet);
+  })
+})
+
+describe('POST /pets/{id}/food', () => {
+  it('should increase age by 1, weight by 1 and decrease food by 1', async () => {
+    const createPetBody = { name: 'Fluffy' };
+    const expectedPet = {
+      id: 1,
+      name: 'Fluffy',
+      age: 2,
+      weight: 2,
+      food: 0
+    };
+
+    await app!
+    .inject()
+    .body(createPetBody)
+    .post('/pets')
+    const response = await app!
+    .inject()
+    .post('/pets/1/age')
+
+    const body = JSON.parse(response.body)
+
+    expect(response.statusCode).toStrictEqual(200);
+    expect(body).toStrictEqual(expectedPet);
   })
 })
 
