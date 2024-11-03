@@ -34,18 +34,32 @@ export class PetRepository {
         const pets = await this.readAll();
         const nextId = getNextId(pets);
 
-        const newPet= {
+        const newPet = {
             ...petProperties,
             id: nextId
-        }
+        };
 
         pets.push(newPet);
         await this.save(pets);
+
         return newPet;
     }
 
-    update(id: number, pet: PetProperties): Promise<Pet> {
-        throw new Error('Not implemented')
+    async update(id: number, key: "food" | "age"): Promise<Pet | undefined | null> {
+        const pets = await this.readAll();
+        const petToUpdate = pets.find(pet => pet.id === id);
+
+        if (petToUpdate) {
+            if (petToUpdate.weight === 0) return null;
+            const updatedPet = {
+                ...petToUpdate,
+                [key]: (petToUpdate[key]++)
+            }
+            await this.save(pets);
+            return updatedPet;
+        }
+
+        return petToUpdate;
     }
 
     delete(id: number): Promise<void> {

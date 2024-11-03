@@ -1,5 +1,5 @@
-import {JsonFileStore} from '../utils/json-file-store'
-import {Pet} from '../types/pet-type'
+import { JsonFileStore } from '../utils/json-file-store'
+import { Pet } from '../types/pet-type'
 import { PetRepository } from '../data-access/pet-repository';
 
 export class PetService {
@@ -25,5 +25,9 @@ export class PetService {
 
     async getById(id: number) {
         return await this.repository.readById(id);
+    }
+
+    async updatePet(id: number, key: "food" | "age") {
+        return await this.repository.update(id, key);
     }
 }

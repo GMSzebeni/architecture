@@ -26,6 +26,7 @@ export default async function createApp(options = {}, dataFilePath: PathLike) {
       additionalProperties: false
     }
   } as const
+
   const getPetSchema = {
     params: {
       type: 'object',
@@ -37,6 +38,7 @@ export default async function createApp(options = {}, dataFilePath: PathLike) {
       required: ['id']
     }
   } as const
+
   app.post(
     '/pets',
     { schema: postPetSchema },
@@ -65,6 +67,25 @@ export default async function createApp(options = {}, dataFilePath: PathLike) {
       const { id } = request.params;
       reply.status(200);
       return petService.getById(id);
+    }
+  )
+
+  app.post(
+    '/pets/:id/food',
+    { schema: getPetSchema },
+    async (request, reply) => {
+      const { id } = request.params;
+      const fedPet = await petService.updatePet(id, "food");
+      if (fedPet) {
+        reply.status(200);
+        return fedPet;
+      } else if (fedPet === null) {
+        reply.status(409);
+        return "The pet is dead."
+      } else {
+        reply.status(404);
+        return "Pet is not found."
+      }
     }
   )
 
