@@ -34,10 +34,8 @@ export class PetService {
         if (petToUpdate) {
             if (petToUpdate.weight === 0) return null;
 
-            const updatedPet = {
-                ...petToUpdate,
-                food: petToUpdate.food += 1
-            }
+            const updatedPet = petToUpdate;
+            petToUpdate.food += 1;
             
             await this.repository.update(id, updatedPet);
             return updatedPet;
