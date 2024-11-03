@@ -94,11 +94,11 @@ export default async function createApp(options = {}, dataFilePath: PathLike) {
     { schema: getPetSchema },
     async (request, reply) => {
       const { id } = request.params;
-      const fedPet = await petService.updateAge(id);
-      if (fedPet) {
+      const agedPet = await petService.updateAge(id);
+      if (agedPet) {
         reply.status(200);
-        return fedPet;
-      } else if (fedPet === null) {
+        return agedPet;
+      } else if (agedPet === null) {
         reply.status(409);
         return "The pet is dead."
       } else {
