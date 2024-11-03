@@ -45,4 +45,26 @@ export class PetService {
 
         return petToUpdate;
     }
+
+    async updateAge(id: number): Promise<Pet | undefined | null> {
+        const pets = await this.getAll();
+        const petToUpdate = pets.find(pet => pet.id === id);
+
+        if (petToUpdate) {
+            if (petToUpdate.weight === 0) return null;
+            const updatedPet: Pet = petToUpdate;
+            petToUpdate.age += 1;
+            if (petToUpdate.food === 0) {
+                petToUpdate.weight -= 1;
+            } else {
+                petToUpdate.food -= 1;
+                petToUpdate.weight += 1;
+            }
+            
+            await this.repository.update(id, updatedPet);
+            return updatedPet;
+        }
+
+        return petToUpdate;
+    }
 }

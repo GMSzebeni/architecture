@@ -89,5 +89,24 @@ export default async function createApp(options = {}, dataFilePath: PathLike) {
     }
   )
 
+  app.post(
+    '/pets/:id/age',
+    { schema: getPetSchema },
+    async (request, reply) => {
+      const { id } = request.params;
+      const fedPet = await petService.updateAge(id);
+      if (fedPet) {
+        reply.status(200);
+        return fedPet;
+      } else if (fedPet === null) {
+        reply.status(409);
+        return "The pet is dead."
+      } else {
+        reply.status(404);
+        return "Pet is not found."
+      }
+    }
+  )
+
   return app;
 }
